@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView textView;
     private GoogleMap googleMap;
     private RealmResults<CurrentUser> realmResults = null;
+    private AlertDialog alertDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +81,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
             textView.setVisibility(View.GONE);
+            dismissAlert();
         }else {
+            showErrorDialog();
             textView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void showErrorDialog() {
+        alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Please login in GeoSpark Application to view user visited locations");
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    private void dismissAlert(){
+        if (alertDialog != null && alertDialog.isShowing())
+            alertDialog.dismiss();
     }
 
     @Override
